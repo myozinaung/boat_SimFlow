@@ -1,0 +1,227 @@
+FoamFile
+{
+	version	2.0;
+	class	dictionary;
+	format	ascii;
+	location	"system";
+	object	snappyHexMeshDict;
+}
+castellatedMesh	true;
+snap	true;
+addLayers	true;
+geometry
+{
+	Boat.stl
+	{
+		type	triSurfaceMesh;
+		simflowType	brep;
+		topoType	shell;
+		name	Boat;
+		faceGroups
+		{
+			face_0
+			{
+				name	Boat;
+			}
+			face_1
+			{
+				name	Boat;
+			}
+			face_2
+			{
+				name	Boat;
+			}
+		}
+	}
+	refinement.stl
+	{
+		type	triSurfaceMesh;
+		simflowType	primitive;
+		primitiveType	box;
+		name	refinement;
+		max	(11.0 6.0 0.050000012);
+		min	(-11.0 -6.0 -0.35);
+		faceGroups
+		{
+			x_min
+			{
+				name	refinement;
+			}
+			x_max
+			{
+				name	refinement;
+			}
+			y_min
+			{
+				name	refinement;
+			}
+			y_max
+			{
+				name	refinement;
+			}
+			z_min
+			{
+				name	refinement;
+			}
+			z_max
+			{
+				name	refinement;
+			}
+		}
+	}
+	water.stl
+	{
+		type	triSurfaceMesh;
+		simflowType	primitive;
+		primitiveType	box;
+		name	water;
+		max	(11.0 6.0 -0.1500001);
+		min	(-11.0 -6.0 -3.0);
+		faceGroups
+		{
+			x_min
+			{
+				name	water;
+			}
+			x_max
+			{
+				name	water;
+			}
+			y_min
+			{
+				name	water;
+			}
+			y_max
+			{
+				name	water;
+			}
+			z_min
+			{
+				name	water;
+			}
+			z_max
+			{
+				name	water;
+			}
+		}
+	}
+}
+castellatedMeshControls
+{
+	locationInMesh	(0.0 2.0 0.0);
+	refinementSurfaces
+	{
+		Boat
+		{
+			level	( 4 4 );
+			patchInfo
+			{
+				type	wall;
+			}
+		}
+	}
+	refinementRegions
+	{
+		refinement
+		{
+			mode	inside;
+			levels	((1.0E30 2));
+		}
+	}
+	limitRegions
+	{
+	}
+	features	
+	(
+	{
+		file	"Boat.eMesh";
+		levels	((0 0));
+	}
+	);
+	maxLocalCells	1000000;
+	maxGlobalCells	10000000;
+	nCellsBetweenLevels	3;
+	maxLoadUnbalance	0.1;
+	minRefinementCells	10;
+	resolveFeatureAngle	30.0;
+	allowFreeStandingZoneFaces	true;
+}
+snapControls
+{
+	tolerance	1.0;
+	nSmoothPatch	3;
+	nSolveIter	500;
+	nRelaxIter	5;
+	nFeatureSnapIter	10;
+	implicitFeatureSnap	true;
+	explicitFeatureSnap	true;
+	multiRegionFeatureSnap	true;
+	nFaceSplitInterval	5;
+}
+addLayersControls
+{
+	layers
+	{
+		Boat_face_0
+		{
+			nSurfaceLayers	4;
+			expansionRatio	1.25;
+			firstLayerThickness	0.2;
+		}
+		Boat_face_1
+		{
+			nSurfaceLayers	4;
+			expansionRatio	1.25;
+			firstLayerThickness	0.2;
+		}
+		Boat_face_2
+		{
+			nSurfaceLayers	4;
+			expansionRatio	1.25;
+			firstLayerThickness	0.2;
+		}
+	}
+	relativeSizes	true;
+	minThickness	0.1;
+	firstLayerThickness	0.2;
+	expansionRatio	1.25;
+	nGrow	0;
+	featureAngle	180.0;
+	maxFaceThicknessRatio	0.5;
+	nSmoothSurfaceNormals	5;
+	nSmoothThickness	10;
+	minMedialAxisAngle	90.0;
+	maxThicknessToMedialRatio	0.5;
+	nMedialAxisIter	100;
+	nSmoothNormals	3;
+	slipFeatureAngle	30.0;
+	nRelaxIter	5;
+	nBufferCellsNoExtrude	0;
+	nLayerIter	50;
+	nRelaxedIter	20;
+	detectExtrusionIsland	true;
+}
+meshQualityControls
+{
+	maxNonOrtho	65.0;
+	maxBoundarySkewness	20.0;
+	maxInternalSkewness	4.0;
+	maxConcave	80.0;
+	minVol	1.0E-14;
+	minTetQuality	1.0E-20;
+	minArea	-1.0;
+	minTwist	0.02;
+	minTriangleTwist	-1.0;
+	minDeterminant	0.01;
+	minFaceWeight	0.05;
+	minVolRatio	0.01;
+	minVolCollapseRatio	0.1;
+	nSmoothScale	4;
+	errorReduction	0.75;
+	relaxed
+	{
+		maxNonOrtho	75.0;
+	}
+}
+mergeTolerance	1.0E-6;
+debug	0;

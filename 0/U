@@ -1,0 +1,45 @@
+FoamFile
+{
+	version	2.0;
+	format	binary;
+	class	volVectorField;
+	location	"0";
+	object	U;
+	arch	"LSB;label=32;scalar=64";
+}
+dimensions	[0 1 -1 0 0 0 0];
+internalField	uniform (2.0 0.0 0.0);
+boundaryField
+{
+	inlet
+	{
+		type	surfaceNormalFixedValue;
+		refValue	uniform -2.0;
+	}
+	outlet
+	{
+		type	outletPhaseMeanVelocity;
+		value	uniform (2.0 0.0 0.0);
+		Umean	2.0;
+		alpha	alpha.phase1;
+	}
+	symmetry
+	{
+		type	symmetry;
+	}
+	bottom
+	{
+		type	fixedValue;
+		value	uniform (2.0 0.0 0.0);
+	}
+	top
+	{
+		type	pressureInletOutletVelocity;
+		value	uniform (2.0 0.0 0.0);
+		phi	rhoPhi;
+	}
+	Boat
+	{
+		type	noSlip;
+	}
+}

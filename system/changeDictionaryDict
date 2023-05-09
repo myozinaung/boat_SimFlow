@@ -1,0 +1,224 @@
+FoamFile
+{
+	version	2.0;
+	format	binary;
+	class	dictionary;
+	location	"system";
+	object	changeDictionaryDict;
+}
+p_rgh
+{
+	boundaryField
+	{
+		inlet
+		{
+			type	fixedFluxPressure;
+		}
+		outlet
+		{
+			type	zeroGradient;
+		}
+		symmetry
+		{
+			type	symmetry;
+		}
+		bottom
+		{
+			type	fixedFluxPressure;
+		}
+		top
+		{
+			type	totalPressure;
+			p0	uniform 0.0;
+			rho	rho;
+			phi	rhoPhi;
+			gamma	0;
+		}
+		Boat
+		{
+			type	fixedFluxPressure;
+		}
+	}
+}
+U
+{
+	boundaryField
+	{
+		inlet
+		{
+			type	surfaceNormalFixedValue;
+			refValue	uniform -2.0;
+		}
+		outlet
+		{
+			type	outletPhaseMeanVelocity;
+			Umean	2.0;
+			alpha	alpha.phase1;
+		}
+		symmetry
+		{
+			type	symmetry;
+		}
+		bottom
+		{
+			type	fixedValue;
+			value	uniform (2.0 0.0 0.0);
+		}
+		top
+		{
+			type	pressureInletOutletVelocity;
+			phi	rhoPhi;
+		}
+		Boat
+		{
+			type	noSlip;
+		}
+	}
+}
+k
+{
+	boundaryField
+	{
+		inlet
+		{
+			type	turbulentIntensityKineticEnergyInlet;
+			intensity	0.05;
+			phi	rhoPhi;
+		}
+		outlet
+		{
+			type	zeroGradient;
+		}
+		symmetry
+		{
+			type	symmetry;
+		}
+		bottom
+		{
+			type	kqRWallFunction;
+		}
+		top
+		{
+			type	turbulentIntensityKineticEnergyInlet;
+			intensity	0.05;
+			phi	rhoPhi;
+		}
+		Boat
+		{
+			type	kqRWallFunction;
+		}
+	}
+}
+omega
+{
+	boundaryField
+	{
+		inlet
+		{
+			type	turbulentMixingLengthFrequencyInlet;
+			phi	rhoPhi;
+			mixingLength	0.001;
+		}
+		outlet
+		{
+			type	zeroGradient;
+		}
+		symmetry
+		{
+			type	symmetry;
+		}
+		bottom
+		{
+			type	omegaWallFunction;
+		}
+		top
+		{
+			type	turbulentMixingLengthFrequencyInlet;
+			phi	rhoPhi;
+			mixingLength	0.001;
+		}
+		Boat
+		{
+			type	omegaWallFunction;
+		}
+	}
+}
+nut
+{
+	boundaryField
+	{
+		symmetry
+		{
+			type	symmetry;
+		}
+		bottom
+		{
+			type	nutUWallFunction;
+		}
+		Boat
+		{
+			type	nutUWallFunction;
+		}
+	}
+}
+alpha.phase1
+{
+	boundaryField
+	{
+		outlet
+		{
+			type	variableHeightFlowRate;
+			phi	rhoPhi;
+			upperBound	1.0;
+			lowerBound	0.0;
+		}
+		symmetry
+		{
+			type	symmetry;
+		}
+		bottom
+		{
+			type	zeroGradient;
+		}
+		top
+		{
+			type	inletOutlet;
+			inletValue	uniform 0.0;
+			phi	rhoPhi;
+		}
+		Boat
+		{
+			type	zeroGradient;
+		}
+	}
+}
+pointDisplacement
+{
+	boundaryField
+	{
+		inlet
+		{
+			type	fixedValue;
+			value	uniform (0 0 0);
+		}
+		outlet
+		{
+			type	fixedValue;
+			value	uniform (0 0 0);
+		}
+		symmetry
+		{
+			type	symmetry;
+		}
+		bottom
+		{
+			type	fixedValue;
+			value	uniform (0 0 0);
+		}
+		top
+		{
+			type	fixedValue;
+			value	uniform (0 0 0);
+		}
+	}
+}

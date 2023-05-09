@@ -1,0 +1,88 @@
+FoamFile
+{
+	class	dictionary;
+	format	ascii;
+	location	system;
+	object	controlDict;
+	version	2.0;
+}
+adjustTimeStep	true;
+application	interFoam;
+deltaT	1e-04;
+endTime	10;
+maxAlphaCo	0.5;
+maxCo	2;
+maxDeltaT	1e-02;
+purgeWrite	0;
+startFrom	latestTime;
+startTime	0;
+stopAt	endTime;
+timeFormat	general;
+timePrecision	6;
+writeControl	adjustableRunTime;
+writeInterval	0.05;
+writePrecision	7;
+runTimeModifiable	true;
+compression	uncompressed;
+writeFormat	binary;
+libs	("libfvMotionSolvers.dll" "libturbulenceModels.dll" "libturbulenceModelSchemes.dll" "libfvOptions.dll");
+functions
+{
+	slices
+	{
+		libs	("libsampling.dll");
+		type	surfaces;
+		interpolationScheme	cellPoint;
+		surfaceFormat	foam;
+		surfaces	(
+	slice_1
+	{
+		interpolate	true;
+		planeType	pointAndNormal;
+		pointAndNormalDict
+		{
+			normal	(0 1 0);
+			point	(0.0 0.0 0.0);
+		}
+		triangulate	true;
+		type	plane;
+	}
+);
+		fields	(U alpha.phase1);
+		enabled	true;
+		log	true;
+		writeControl	writeTime;
+		writeFields	true;
+	}
+	writeExtraFields
+	{
+		libs	("libutilityFunctionObjects.dll");
+		objects	(p rho);
+		type	writeObjects;
+		writeOption	anyWrite;
+		enabled	true;
+		log	true;
+		writeControl	writeTime;
+	}
+	forceMonitorOnBoatInDefault
+	{
+		U	U;
+		libs	("libforces.dll");
+		p	p;
+		rho	rho;
+		type	forces;
+		CofR	(0 0 0);
+		patches	(Boat);
+		rhoInf	1.0;
+		enabled	true;
+		log	true;
+	}
+}
+OptimisationSwitches
+{
+	fileHandler	uncollated;
+	fileModificationSkew	0;
+	maxMasterFileBufferSize	1.0E9;
+	maxThreadFileBufferSize	1.0E9;
+	mpiBufferSize	200000000;
+}

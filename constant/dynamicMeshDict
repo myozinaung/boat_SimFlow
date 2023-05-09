@@ -1,0 +1,55 @@
+FoamFile
+{
+	version	2.0;
+	class	dictionary;
+	format	ascii;
+	location	"constant";
+	object	dynamicMeshDict;
+}
+dynamicFvMesh	dynamicMotionSolverFvMesh;
+motionSolverLibs	("libsixDoFRigidBodyMotion.dll");
+solver	sixDoFRigidBodyMotion;
+sixDoFRigidBodyMotionCoeffs
+{
+	patches	(Boat);
+	innerDistance	0.2;
+	outerDistance	1.0;
+	mass	120.0;
+	centreOfMass	(-1.1 0.0 -0.1385);
+	momentOfInertia	(100.0 500.0 100.0);
+	velocity	(0.0 0.0 0.0);
+	rhoInf	1.0;
+	accelerationRelaxation	1.0;
+	accelerationDamping	1.0;
+	report	true;
+	solver
+	{
+		type	Newmark;
+	}
+	constraints
+	{
+		translationConstraint
+		{
+			sixDoFRigidBodyMotionConstraint	line;
+			direction	(0.0 0.0 1.0);
+		}
+		rotationConstraint
+		{
+			sixDoFRigidBodyMotionConstraint	axis;
+			axis	(0.0 1.0 0.0);
+		}
+	}
+	restraints
+	{
+		linearRestraint
+		{
+			sixDoFRigidBodyMotionRestraint	linearDamper;
+			coeff	30.0;
+		}
+		angularRestraint
+		{
+			sixDoFRigidBodyMotionRestraint	sphericalAngularDamper;
+			coeff	30.0;
+		}
+	}
+}
